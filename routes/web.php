@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BelajarController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -21,4 +25,12 @@ Route::post('actionBagi', [BelajarController::class, 'actionBagi'])->name('actio
 
 Route::get('kali', [BelajarController::class, 'perkalian'])->name('kali');
 Route::post('actionKali', [BelajarController::class, 'actionKali'])->name('actionKali');
+
+Route::prefix('admin')->name('admin.')->group(function(){
+    Route::get('/login', [LoginController::class, 'login']);
+    Route::post('/actionLogin', [LoginController::class, 'actionLogin'])->name('actionLogin');
+
+    Route::resource('dashboard', DashboardController::class);
+    Route::resource('user', UserController::class);
+});
 
