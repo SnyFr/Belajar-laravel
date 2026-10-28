@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BelajarController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SettingController as ControllersSettingController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,5 +34,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
     Route::resource('dashboard', DashboardController::class);
     Route::resource('user', UserController::class);
+
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
 

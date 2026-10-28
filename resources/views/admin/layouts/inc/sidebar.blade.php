@@ -2,7 +2,7 @@
     <!-- Brand Logo / Identity -->
     <a href="index.html" class="sidebar-brand">
       <i class="bi bi-asterisk"></i>
-      <span>Spark Admin</span>
+      <span>QQ99.BET</span>
     </a>
 
     <!-- Navigation Menu -->
@@ -62,7 +62,7 @@
             </a>
           </li>
           <li class="sidebar-menu-item">
-            <a href="page-404.html" class="sidebar-menu-link" id="menu-404" title="404 Page">
+            <a href="{{ route('admin.settings') }}" class="sidebar-menu-link" id="settings" title="settings">
               <i class="bi bi-gear-wide"></i>
               <span>Settings</span>
             </a>
