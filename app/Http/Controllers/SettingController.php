@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -35,6 +36,24 @@ class SettingController extends Controller
             ]
         );
 
+        if ($request->hasFile('site_logo')) {
+            $setting = Setting::where('key', 'site_logo')->first();
+            if ($setting && $setting->value ) {
+                //hapus gambar
+                Storage::disk('public')->delete($setting->value);
+            };
+            $path = $request->file('site_logo')->store('setting', 'public');
+            Setting::updateOrCreate(
+                ['key' => 'site_logo'],
+                [
+                    'value' => $path,
+                    'label' => "site_logo",
+                    'group' => 'general',
+                    'type'  => 'image',
+                ]
+            );
+        }
+
         $ignoreKeys = ['site_logo'];
         foreach ($validated as $key => $value) {
             if (in_array($key, $ignoreKeys)) {
@@ -50,6 +69,6 @@ class SettingController extends Controller
                 ]
             );
         }
-        return redirect()->route('admin.settings')->with('Success!','Settings on website PPKD Sticker has been saved!');
+        return redirect()->route('admin.settings')->with('success','Settings on website PPKD Sticker has been saved!');
     }
 }

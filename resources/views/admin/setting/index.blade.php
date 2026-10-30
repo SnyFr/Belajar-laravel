@@ -37,19 +37,28 @@
 
                 <div class="mb-3">
                   <label for="" class="form-label">Company Name / Website</label>
-                  <input type="text" class="form-control" name="site_name" value="{{ old('site_name', $setting['site_name']->value) }}">
+                  <input type="text" class="form-control" name="site_name" value="{{ old('site_name', $setting['site_name'] ?? "") }}">
                 </div>
                 <div class="mb-3">
                   <label for="" class="form-label">Website Tagline</label>
-                  <input type="text" class="form-control" name="site_tagline" value="{{ old('site_tagline', $setting['site_tagline']->value) }}">
+                  <input type="text" class="form-control" name="site_tagline" value="{{ old('site_tagline', $setting['site_tagline'] ?? "") }}">
                 </div>
                 <div class="mb-3">
                   <label for="" class="form-label">Website Short Description</label>
-                  <textarea name="site_description" id="" cols="30" rows="10" class="form-control" value="{{ old('site_description', $setting['site_description']->value) }}"></textarea>
+                  <textarea name="site_description" id="" cols="30" rows="10" class="form-control" {{ old('site_description', $setting['site_description'] ?? "") }}></textarea>
                 </div>
                 <div class="mb-3">
-                  <label for="" class="form-label">Website Logo</label>
-                  <input type="file" name="site_logo" value="{{ old('site_logo', $setting['site_logo']->value) }}">
+                  <div class="d-flex jusitfy-between">
+
+                    <div>
+                      <label for="" class="form-label ">Website Logo</label>
+                      <input type="file" name="site_logo" accept="image/*">
+                      <div>
+                        <img width="100" src="{{ asset('storage/' . $setting['site_logo']) }}" alt="Logo Website" class="img-thumbnail">
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
             </div>
@@ -59,19 +68,19 @@
               
               <div class="mb-3">
                 <label for="" class="form-label">Telephone Number</label>
-                <input type="text" class="form-control" name="phone" value="{{ old('phone', $setting['phone']->value) }}">
+                <input type="text" class="form-control" name="phone" value="{{ old('phone', $setting['phone'] ?? "") }}">
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Upload Email</label>
-                <input type="text" class="form-control" name="email_upload" value="{{ old('email_upload', $setting['email_upload']->value) }}">
+                <input type="text" class="form-control" name="email_upload" value="{{ old('email_upload', $setting['email_upload'] ?? "") }}">
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Order Email</label>
-                <input type="text" class="form-control" name="email_order" value="{{ old('email_order', $setting['email_order']->value) }}">
+                <input type="text" class="form-control" name="email_order" value="{{ old('email_order', $setting['email_order'] ?? "") }}">
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Address</label>
-                <textarea name="address" id="" cols="30" rows="10" class="form-control" value="{{ old('address', $setting['address']->value) }}"></textarea>              
+                <textarea name="address" id="" cols="30" rows="10" class="form-control" {{ old('address', $setting['address'] ?? "") }}></textarea>              
               </div>
               
             </div>
@@ -81,23 +90,23 @@
 
               <div class="mb-3">
                 <label for="" class="form-label">Url Shopee</label>
-                <input type="text" class="form-control" name="url_shopee" value="{{ old('url_shopee', $setting['url_shopee']->value) }}">
+                <input type="text" class="form-control" name="url_shopee" value="{{ old('url_shopee', $setting['url_shopee'] ?? "") }}">
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Url Facebook</label>
-                <input type="text" class="form-control" name="url_facebook" value="{{ old('url_facebook', $setting['url_facebook']->value) }}">
+                <input type="text" class="form-control" name="url_facebook" value="{{ old('url_facebook', $setting['url_facebook'] ?? "") }}">
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Url Instagram</label>
-                <input type="text" class="form-control" name="url_instagram" value="{{ old('url_instagram', $setting['url_instagram']->value) }}">
+                <input type="text" class="form-control" name="url_instagram" value="{{ old('url_instagram', $setting['url_instagram'] ?? "") }}">
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Url Youtube</label>
-                <input type="text" class="form-control" name="url_youtube" value="{{ old('url_youtube', $setting['url_youtube']->value) }}">
+                <input type="text" class="form-control" name="url_youtube" value="{{ old('url_youtube', $setting['url_youtube'] ?? "") }}">
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Url Tiktok</label>
-                <input type="text" class="form-control" name="url_tiktok" value="{{ old('url_tiktok', $setting['url_tiktok']->value) }}">
+                <input type="text" class="form-control" name="url_tiktok" value="{{ old('url_tiktok', $setting['url_tiktok'] ?? "") }}">
               </div>
 
             </div>
