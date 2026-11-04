@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -34,6 +35,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
     Route::resource('dashboard', DashboardController::class);
     Route::resource('user', UserController::class);
     Route::resource('category', CategoryController::class);
+    Route::resource('product', ProductController::class);
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
