@@ -14,8 +14,10 @@
                     <th>No</th>
                     <th>Category</th>
                     <th>Product Name</th>
+                    <th>Slug</th>
                     <th>Image</th>
-                    <th>Stock</th>
+                    <th>Short Description</th>
+                    <th>Description</th>
                     <th>Price</th>
                     <th>Actions</th>
                 </tr>
@@ -27,6 +29,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->category->name }}</td>
                         <td>{{ $item->name }}</td>
+                        <td>{{ $item->slug }}</td>
                         <td>
                             @if ($item->image !== null)
                             <img src="{{ asset('storage/' . $item->image) }}" width="200" alt="">
@@ -34,7 +37,8 @@
                             <span>Image not available!</span>
                             @endif
                         </td>
-                        <td>{{ $item->stock }}</td>
+                        <td>{{ $item->short_description }}</td>
+                        <td>{{ $item->description }}</td>
                         <td>Rp. {{ number_format($item->price, 2, ',', '.') }}</td>
                         <td>
                             <a class="table-btn-action" title="Edit" href="{{ route('admin.product.edit', $item->id) }}">

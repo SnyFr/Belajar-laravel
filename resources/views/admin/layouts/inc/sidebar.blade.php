@@ -2,7 +2,7 @@
     <!-- Brand Logo / Identity -->
     <a href="index.html" class="sidebar-brand">
       <i class="bi bi-asterisk"></i>
-      <span>QQ99.BET</span>
+      <span>{{ $setting->site_name ?? 'QQ99.BET' }}</span>
     </a>
 
     <!-- Navigation Menu -->
@@ -25,9 +25,9 @@
         <div class="sidebar-menu-title">Components</div>
         <ul class="sidebar-menu-list">
           <li class="sidebar-menu-item">
-            <a href="tables-basic.html" class="sidebar-menu-link" id="menu-basictables" title="Basic Tables">
+            <a href="{{ route('admin.category.index') }}" class="sidebar-menu-link" id="menu-basictables" title="Basic Tables">
               <i class="bi bi-table"></i>
-              <span>Basic Tables</span>
+              <span>Categories</span>
             </a>
           </li>
           <li class="sidebar-menu-item">

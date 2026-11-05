@@ -52,10 +52,10 @@
             <div class="row align-items-center g-2 g-lg-3">
                 <!-- Logo Container -->
                 <div class="col-6 col-md-3 col-lg-3">
-                    {{-- <a class="d-inline-block" href="index.html">
-                        <img alt="PrimaGraphia - Inovasi Cetak Kekinian" class="img-fluid"
+                    <a class="d-inline-block" href="index.html">
+                        <img alt="{{ $settings['site_name'] ?? '' }} - {{ $settings['site_tagline'] ?? '' }}" class="img-fluid"
                             src="{{ asset('storage/' . $settings['site_logo']) }}" style="height: 48px; width: auto;" />
-                    </a> --}}
+                    </a>
                 </div>
                 <!-- Global Search Bar Form -->
                 <div class="col-12 col-md-6 col-lg-6 order-3 order-md-2">

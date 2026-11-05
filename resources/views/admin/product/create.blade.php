@@ -39,7 +39,8 @@
         </div>
         <div class="mb-3">
             <label for="">Description</label>
-            <textarea name="description" id="editor" class="form-control" cols="30" rows="10"></textarea>
+            <textarea name="description" class="d-none form-control" cols="30" rows="10"></textarea>
+            <div id="editor">{!! old('description') !!}</div>
         </div>
 
         {{-- Harga Bahan --}}
@@ -99,7 +100,7 @@
 
         <div class="mb-3">
             <label for="">Image</label>
-            <input type="file" name="image" class="form-control">
+            <input type="file" name="images[]" class="form-control" multiple>
         </div>
 
         <div class="mb-3">
@@ -108,6 +109,6 @@
             </button>
             <a href="{{ url()->previous() }}" class="btn-custom btn-custom-warning">Back</a>
         </div>
-        
+
     </form>
 @endsection
