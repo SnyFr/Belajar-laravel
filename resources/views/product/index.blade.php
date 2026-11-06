@@ -35,7 +35,7 @@
                 </div>
                 <!-- Realistic 3D Card Mockup with Spot UV / Foil visual simulation -->
                 <div class="position-relative" style="width: 100%; max-width: 300px; z-index: 2;">
-                  <img id="productPreviewImage" src="{{ asset('storage/' . $product->image) }}"
+                  <img id="productPreviewImage" src="{{ asset('storage/' . $product->images->first()->path ?? '') }}"
                     class="img-fluid rounded-3 shadow-sm" alt="Product Preview">
                 </div>
               </div>

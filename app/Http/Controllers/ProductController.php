@@ -7,7 +7,6 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -39,64 +38,86 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->file('images'));
         $validated = $request->validate([
             'category_id'       => 'required|exists:categories,id',
-            'image'             => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2048',
             'name'              => 'required|string|max:255',
             'slug'              => 'nullable|string|unique:products,slug,',
-            'price'             => 'nullable|integer|min:0',
-            'price_art_cartoon' => 'nullable|integer|min:0',
-            'price_art_paper'   => 'nullable|integer|min:0',
-            'price_hvs'         => 'nullable|integer|min:0',
-            'price_doft'        => 'nullable|integer|min:0',
-            'price_glossy'      => 'nullable|integer|min:0',
-            'price_cutting'     => 'nullable|integer|min:0',
+            'price'             => 'required|numeric',
+            'price_art_cartoon' => 'nullable|numeric',
+            'price_art_paper'   => 'nullable|numeric',
+            'price_hvs'         => 'nullable|numeric',
+            'price_doft'        => 'nullable|numeric',
+            'price_glossy'      => 'nullable|numeric',
+            'price_cutting'     => 'nullable|numeric',
             'short_description' => 'nullable|string',
             'description'       => 'nullable|string',
 
             //validasi product image
             'images'            => 'nullable|array',
-            'images.*'          => 'image|mimes:png,jpg,jpeg,webp|max:2048',
+            'images.*'          => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
             'alt'               => 'nullable|array',
             'alt.*'             => 'nullable|string|max:255',
             
         ]);
 
-        //product, product image
-        //transaction
-        DB::transaction(function () use ($request, $validated) {
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['name']);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $arrImage = [];
+
+            if ($request->file('images') && is_array($request->images)) {
+                if (count($request->images) > 0) {
+                    foreach ($request->file('images', []) as $key => $image) {
+                        if ($request->hasFile('images.' . $key)) {
+                            $path = $image->store('products', 'public');
+
+                            $arrImage[] = [
+                                'path' => $path,
+                                'alt' => $request->alt[$key] ?? $validated['name'],
+                                'sort_order' => $key
+                            ];
+                            
+                        }
+                    }
+                }
+            }
+
             $product = Product::create([
-                'category_id'=> $validated['category_id'],
+                'category_id' => $validated['category_id'],
                 'name' => $validated['name'],
+                'slug' => $validated['slug'],
+                'price_art_paper' => $validated['price_art_paper'],
+                'description' => $validated['description'],
+                'short_description' => $validated['short_description'],
+                'price_art_cartoon' => $validated['price_art_cartoon'],
+                'price_hvs' => $validated['price_hvs'],
+                'price_doft' => $validated['price_doft'],
+                'price_glossy' => $validated['price_glossy'],
+                'price_cutting' => $validated['price_cutting'],
+                'price' => $validated['price'],
             ]);
 
-            if ($request->hasFile('images')) {
-            $imageData = [];
 
-                foreach ($request->file('images') as $key => $file) {
-                    $path = $file->store('products', 'public');
-                    
-                    $imageData[] = [
-                        'path' => $path,
-                        'alt' => $request->input('alt.{$key}') ?? $product->name,
-                        'sort_order' => $key + 1,
-                        ];
-                    }
-                    $product->images()->createMany($imageData);
-                }
-        });
+            $product->images()->createMany($arrImage);
 
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
 
-        $validated['slug'] = $request->filled('slug')
-        ? Str::slug($request->slug)
-        : Str::slug($request->name);
-
-        
+            throw $th;
+        }
 
         return redirect()->route('admin.product.index')
             ->with('success', 'Produk has been created successfully.');
-
     }
+
+
+
 
     /**
      * Display the specified resource.
@@ -120,48 +141,37 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, string $id)
     {
+        $product = Product::findOrFail($id);
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:2048',
             'name' => 'required|string|max:255',
-            'slug' => ['required', 'string', 'max:60', Rule::unique('products', 'slug')->ignore($product->id)],
+            'slug' => 'nullable|string|max:60|unique:products,slug,' . $product->id,
             'price' => 'nullable|numeric|min:0',
-            'price_art_cartoon' => 'nullable|integer|min:0',
-            'price_art_paper' => 'nullable|integer|min:0',
-            'price_hvs' => 'nullable|integer|min:0',
-            'price_doft' => 'nullable|integer|min:0',
-            'price_glossy' => 'nullable|integer|min:0',
-            'price_cutting' => 'nullable|integer|min:0',
+            'price_art_cartoon' => 'nullable|numeric',
+            'price_art_paper' => 'nullable|numeric',
+            'price_hvs' => 'nullable|numeric',
+            'price_doft' => 'nullable|numeric',
+            'price_glossy' => 'nullable|numeric',
+            'price_cutting' => 'nullable|numeric',
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
         ]);
 
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['name']);
+        }
+
         if ($request->hasFile('image')) {
-            if ($product->image) {
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
                 Storage::disk('public')->delete($product->image);
             }
 
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
-
-        $product->forceFill([
-            'category_id' => $validated['category_id'],
-            'image' => $validated['image'] ?? $product->image,
-            'name' => $validated['name'],
-            'slug' => $validated['slug'],
-            'price' => $validated['price'] ?? 0,
-            'price_art_cartoon' => $validated['price_art_cartoon'] ?? 0,
-            'price_art_paper' => $validated['price_art_paper'] ?? 0,
-            'price_hvs' => $validated['price_hvs'] ?? 0,
-            'price_doft' => $validated['price_doft'] ?? 0,
-            'price_glossy' => $validated['price_glossy'] ?? 0,
-            'price_cutting' => $validated['price_cutting'] ?? 0,
-            'short_description' => $validated['short_description'] ?? null,
-            'description' => $validated['description'] ?? null,
-        ]);
-        $product->save();
+        $product->update($validated);
 
         return redirect()->route('admin.product.index')->with('success', 'Product has been updated!');
     }

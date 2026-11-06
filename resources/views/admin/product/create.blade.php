@@ -99,8 +99,21 @@
         </div>
 
         <div class="mb-3">
-            <label for="">Image</label>
-            <input type="file" name="images[]" class="form-control" multiple>
+            <label for="">Images</label>
+            <div id="image-inputs">
+                <!-- Baris Pertama -->
+                <div class="input-group mb-2 image-input-row">
+                    <input type="file" name="images[]" class="form-control"
+                        accept="image/png,image/jpeg,image/webp,image/gif">
+                    <button type="button" class="btn btn-outline-danger remove-image" aria-label="Remove image input">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="button" id="add-image" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-plus-circle"></i> Add image
+            </button>
         </div>
 
         <div class="mb-3">
@@ -111,4 +124,40 @@
         </div>
 
     </form>
+
+    <script>
+        const masukImage = document.querySelector('#image-inputs');
+        const addButton = document.querySelector('#add-image');
+
+        addButton.addEventListener('click', function() {
+            const rows = document.createElement('div');
+            rows.className = 'input-group mb-2 image-input-row';
+            rows.innerHTML = `
+            <input type="file" name="images[]" class="form-control"
+                accept="image/png,image/jpeg,image/webp,image/gif">
+            <button type="button" class="btn btn-outline-danger remove-image" aria-label="Remove image input">
+                <i class="bi bi-trash"></i>
+            </button>
+        `;
+
+            masukImage.appendChild(rows);
+        });
+
+        masukImage.addEventListener('click', function(event) {
+            const removeButton = event.target.closest('.remove-image');
+
+            if (!removeButton) {
+                return;
+            }
+
+            const imageRows = masukImage.querySelectorAll('.image-input-row');
+
+            if (imageRows.length === 1) {
+                imageRows[0].querySelector('input').value = '';
+                return;
+            }
+
+            removeButton.closest('.image-input-row').remove();
+        });
+    </script>
 @endsection

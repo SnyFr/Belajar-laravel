@@ -52,9 +52,13 @@
             <div class="row align-items-center g-2 g-lg-3">
                 <!-- Logo Container -->
                 <div class="col-6 col-md-3 col-lg-3">
-                    <a class="d-inline-block" href="index.html">
+                    <a class="d-flex align-items-center text-decoration-none" href="/">
                         <img alt="{{ $settings['site_name'] ?? '' }} - {{ $settings['site_tagline'] ?? '' }}" class="img-fluid"
-                            src="{{ asset('storage/' . $settings['site_logo']) }}" style="height: 48px; width: auto;" />
+                        src="{{ asset('storage/' . $settings['site_logo']) }}" style="height: 75px; width: auto;"/>
+                        <div class="d-flex flex-column ms-1">
+                            <h5 class="mb-0 fw-bold">{{ $settings['site_name'] ?? '' }}</h5>
+                            <span class="fw-semibold text-dark" style="font-size: 0.75rem;">{{ $settings['site_tagline'] ?? '' }}</span>
+                        </div>
                     </a>
                 </div>
                 <!-- Global Search Bar Form -->

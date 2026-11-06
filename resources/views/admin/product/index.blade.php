@@ -31,14 +31,21 @@
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->slug }}</td>
                         <td>
-                            @if ($item->image !== null)
-                            <img src="{{ asset('storage/' . $item->image) }}" width="200" alt="">
+                            @if (count($item->images) > 0)
+                                @foreach ($item->images as $image)
+                                    @if ($image->path != null)
+                                        <img src="{{ asset('storage/' . $image->path) }}" width="100"
+                                            alt="{{ $image->alt ?? '' }}">
+                                    @else
+                                        <span class="text-muted">Image not Found!</span>
+                                    @endif
+                                @endforeach
                             @else
-                            <span>Image not available!</span>
+                                <span class="text-muted">Image not Found!</span>
                             @endif
                         </td>
                         <td>{{ $item->short_description }}</td>
-                        <td>{{ $item->description }}</td>
+                        <td>{!! $item->description !!}</td>
                         <td>Rp. {{ number_format($item->price, 2, ',', '.') }}</td>
                         <td>
                             <a class="table-btn-action" title="Edit" href="{{ route('admin.product.edit', $item->id) }}">

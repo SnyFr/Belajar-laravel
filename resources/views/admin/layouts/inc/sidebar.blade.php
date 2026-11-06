@@ -2,7 +2,7 @@
     <!-- Brand Logo / Identity -->
     <a href="index.html" class="sidebar-brand">
       <i class="bi bi-asterisk"></i>
-      <span>{{ $setting->site_name ?? 'QQ99.BET' }}</span>
+      <span>{{ $setting['site_name'] ?? 'QQ99.BET' }}</span>
     </a>
 
     <!-- Navigation Menu -->
